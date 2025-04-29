@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 public class DashboardController {
@@ -80,7 +81,13 @@ public class DashboardController {
     
     private void openTaskForm(Task task) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/TaskFormView.fxml"));
+            URL taskFormUrl = getClass().getResource("/views/TaskFormView.fxml");
+            if (taskFormUrl == null) {
+                showAlert("Error: Could not find TaskFormView.fxml");
+                return;
+            }
+            
+            FXMLLoader loader = new FXMLLoader(taskFormUrl);
             Parent taskFormView = loader.load();
             
             TaskForm controller = loader.getController();
@@ -109,7 +116,13 @@ public class DashboardController {
     @FXML
     private void handleViewCompleted() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/CompletedTasksView.fxml"));
+            URL completedTasksUrl = getClass().getResource("/views/CompletedTasksView.fxml");
+            if (completedTasksUrl == null) {
+                showAlert("Error: Could not find CompletedTasksView.fxml");
+                return;
+            }
+            
+            FXMLLoader loader = new FXMLLoader(completedTasksUrl);
             Parent completedTasksView = loader.load();
             
             CompletedTasksController controller = loader.getController();
@@ -130,7 +143,13 @@ public class DashboardController {
     @FXML
     private void handleProfile() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ProfileView.fxml"));
+            URL profileUrl = getClass().getResource("/views/ProfileView.fxml");
+            if (profileUrl == null) {
+                showAlert("Error: Could not find ProfileView.fxml");
+                return;
+            }
+            
+            FXMLLoader loader = new FXMLLoader(profileUrl);
             Parent profileView = loader.load();
             
             ProfileController controller = loader.getController();
@@ -151,7 +170,13 @@ public class DashboardController {
         DataStorage.getInstance().logout();
         
         try {
-            Parent loginView = FXMLLoader.load(getClass().getResource("/views/LoginView.fxml"));
+            URL loginUrl = getClass().getResource("/views/LoginView.fxml");
+            if (loginUrl == null) {
+                showAlert("Error: Could not find LoginView.fxml");
+                return;
+            }
+            
+            Parent loginView = FXMLLoader.load(loginUrl);
             Scene scene = new Scene(loginView);
             
             Stage stage = (Stage) logoutButton.getScene().getWindow();

@@ -1,20 +1,22 @@
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.time.LocalDate;
 
 public class DataStorage {
     private static DataStorage instance;
-    
     private List<User> users;
     private List<Task> tasks;
-    private User currentUser;
+    private int nextUserId = 1;
+    private int nextTaskId = 1;
     
     private DataStorage() {
         users = new ArrayList<>();
         tasks = new ArrayList<>();
-        currentUser = null;
     }
     
     public static DataStorage getInstance() {
@@ -25,186 +27,129 @@ public class DataStorage {
     }
     
     public void initializeDemoData() {
-        // Add demo admin user
-        Admin adminUser = new Admin(
-            "admin", "admin", "Admin", "", "User",
-            "admin@example.com", 30, "Other", "", 1, 1, 1990, 1
+        // Add a regular user
+        registerUser("user", "user123", "John", "", "Doe", "john.doe@example.com", 
+                    30, "Male", "", 5, 15, 1993);
+                    
+        // Add some tasks for the user
+        DateTime now = getCurrentDateTime();
+        DateTime tomorrow = new DateTime(
+            now.getMonth(), now.getDay() + 1, now.getYear(), 
+            12, 0
         );
-        users.add(adminUser);
-        
-        // Add regular user
-        RegularUser regularUser = new RegularUser(
-            "user", "user123", "John", "", "Doe",
-            "john@example.com", 25, "Male", "", 5, 15, 1998, 2
-        );
-        users.add(regularUser);
-        
-        // Add some tasks for the regular user
-        DateTime demoDate = new DateTime(4, 30, 2025, 12, 0);
-        
-        Task task1 = new Task(
-            1, "Complete project proposal", 
-            "Finish writing the project proposal document with budget estimates",
-            demoDate, PrioritySelection.HIGH, "In Progress", 2
+        DateTime nextWeek = new DateTime(
+            now.getMonth(), now.getDay() + 7, now.getYear(), 
+            15, 30
         );
         
-        Task task2 = new Task(
-            2, "Schedule team meeting", 
-            "Schedule a meeting to discuss project timeline and assignments",
-            demoDate, PrioritySelection.MEDIUM, "Pending", 2
-        );
+        int userId = 1; // First registered user ID
+        addTask(new Task(nextTaskId++, "Complete Project Report", 
+                "Finish the analysis section and prepare executive summary", 
+                tomorrow, PrioritySelection.HIGH, "Not Started", userId));
         
-        Task task3 = new Task(
-            3, "Review code changes", 
-            "Go through the new code changes and provide feedback",
-            demoDate, PrioritySelection.LOW, "Completed", 2
-        );
-        task3.setCompleted(true);
-        
-        tasks.add(task1);
-        tasks.add(task2);
-        tasks.add(task3);
+        addTask(new Task(nextTaskId++, "Weekly Team Meeting", 
+                "Discuss project progress and upcoming deadlines", 
+                nextWeek, PrioritySelection.MEDIUM, "Not Started", userId));
+                
+        addTask(new Task(nextTaskId++, "Buy Groceries", 
+                "Milk, eggs, bread, and vegetables", 
+                tomorrow, PrioritySelection.LOW, "Not Started", userId));
+                
+        // Add a completed task
+        addTask(new Task(nextTaskId++, "Pay Bills", 
+                "Electricity and internet bills", 
+                now, PrioritySelection.HIGH, "Completed", userId));
     }
     
-    // User methods
-    public User login(String username, String password) {
-        for (User user : users) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                currentUser = user;
-                return user;
-            }
-        }
-        return null;
-    }
-    
-    public void logout() {
-        currentUser = null;
-    }
-    
-    public User getCurrentUser() {
-        return currentUser;
+    public void addAdminUser(String username, String password) {
+        Admin admin = new Admin(username, password, "Admin", "", "User", 
+                             "admin@example.com", 35, "Male", "", 1, 1, 1990, nextUserId++);
+        users.add(admin);
     }
     
     public User registerUser(String username, String password, String firstName, 
-                         String middleName, String lastName, String email, 
-                         int age, String gender, String profilePic,
-                         int birthMonth, int birthDay, int birthYear) {
+                          String middleName, String lastName, String email, 
+                          int age, String gender, String profilePic,
+                          int birthMonth, int birthDay, int birthYear) {
         // Check if username already exists
         if (users.stream().anyMatch(u -> u.getUsername().equals(username))) {
-            return null;
+            return null; // Username already taken
         }
         
-        int userId = getNextUserId();
-        RegularUser newUser = new RegularUser(
-            username, password, firstName, middleName, lastName,
-            email, age, gender, profilePic, birthMonth, birthDay, birthYear, userId
-        );
-        
+        User newUser = new RegularUser(username, password, firstName, middleName, 
+                                   lastName, email, age, gender, profilePic,
+                                   birthMonth, birthDay, birthYear, nextUserId++);
         users.add(newUser);
         return newUser;
     }
     
-    public List<User> getAllUsers() {
-        return new ArrayList<>(users);
-    }
-    
-    public User getUserById(int userId) {
+    public User login(String username, String password) {
         return users.stream()
-                   .filter(u -> u.getUserId() == userId)
+                   .filter(u -> u.getUsername().equals(username) && u.getPassword().equals(password))
                    .findFirst()
                    .orElse(null);
     }
     
-    public boolean deleteUser(int userId) {
-        User userToRemove = getUserById(userId);
-        if (userToRemove != null) {
-            users.remove(userToRemove);
-            
-            // Also delete associated tasks
-            tasks.removeIf(task -> task.getUserId() == userId);
-            return true;
-        }
-        return false;
-    }
-    
-    // Task methods
-    public Task createTask(String taskName, String taskDetails, DateTime dueDate,
-                       PrioritySelection taskPriority, String taskStatus, int userId) {
-        int taskNo = getNextTaskId();
-        Task newTask = new Task(taskNo, taskName, taskDetails, dueDate, taskPriority, taskStatus, userId);
-        tasks.add(newTask);
-        return newTask;
+    public void logout() {
+        // Perform any logout operations if needed
+        System.out.println("User logged out");
     }
     
     public void addTask(Task task) {
         tasks.add(task);
     }
     
-    public List<Task> getAllTasks() {
-        return new ArrayList<>(tasks);
-    }
-    
-    public List<Task> getTasksByUserId(int userId) {
-        return tasks.stream()
-                   .filter(t -> t.getUserId() == userId)
-                   .collect(Collectors.toList());
-    }
-    
-    public List<Task> getTasksByFilter(int userId, Predicate<Task> filter) {
-        return tasks.stream()
-                   .filter(t -> t.getUserId() == userId)
-                   .filter(filter)
-                   .collect(Collectors.toList());
-    }
-    
-    public List<Task> getCompletedTasksByUserId(int userId) {
-        return getTasksByFilter(userId, Task::isCompleted);
-    }
-    
-    public List<Task> getPendingTasksByUserId(int userId) {
-        return getTasksByFilter(userId, task -> !task.isCompleted());
-    }
-    
-    public Task getTaskById(int taskNo) {
-        return tasks.stream()
-                  .filter(t -> t.getTaskNo() == taskNo)
-                  .findFirst()
-                  .orElse(null);
-    }
-    
-    public void updateTask(Task updatedTask) {
+    public void updateTask(Task task) {
+        int index = -1;
         for (int i = 0; i < tasks.size(); i++) {
-            if (tasks.get(i).getTaskNo() == updatedTask.getTaskNo()) {
-                tasks.set(i, updatedTask);
-                return;
+            if (tasks.get(i).getTaskNo() == task.getTaskNo()) {
+                index = i;
+                break;
+            }
+        }
+        
+        if (index != -1) {
+            tasks.set(index, task);
+        }
+    }
+    
+    public void markTaskAsCompleted(int taskId) {
+        for (Task task : tasks) {
+            if (task.getTaskNo() == taskId) {
+                task.setTaskStatus("Completed");
+                break;
             }
         }
     }
     
-    public boolean deleteTask(int taskNo) {
-        return tasks.removeIf(task -> task.getTaskNo() == taskNo);
+    public void deleteTask(int taskId) {
+        tasks.removeIf(task -> task.getTaskNo() == taskId);
     }
     
-    public Task markTaskAsCompleted(int taskNo) {
-        Task task = getTaskById(taskNo);
-        if (task != null) {
-            task.setCompleted(true);
-            task.setTaskStatus("Completed");
-        }
-        return task;
+    public List<Task> getPendingTasksByUserId(int userId) {
+        return tasks.stream()
+                  .filter(task -> task.getUserId() == userId && !task.isCompleted())
+                  .collect(Collectors.toList());
     }
     
-    private int getNextUserId() {
-        return users.stream()
-                  .mapToInt(User::getUserId)
-                  .max()
-                  .orElse(0) + 1;
+    public List<Task> getTasksByFilter(int userId, Predicate<Task> filter) {
+        return tasks.stream()
+                  .filter(task -> task.getUserId() == userId && filter.test(task))
+                  .collect(Collectors.toList());
     }
     
     public int getNextTaskId() {
-        return tasks.stream()
-                  .mapToInt(Task::getTaskNo)
-                  .max()
-                  .orElse(0) + 1;
+        return nextTaskId++;
+    }
+    
+    private DateTime getCurrentDateTime() {
+        LocalDate now = LocalDate.now();
+        return new DateTime(
+            now.getMonthValue(),
+            now.getDayOfMonth(),
+            now.getYear(),
+            java.time.LocalTime.now().getHour(),
+            java.time.LocalTime.now().getMinute()
+        );
     }
 }

@@ -11,6 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.net.URL;
 
 public class LoginController {
     @FXML private TextField usernameField;
@@ -33,7 +34,13 @@ public class LoginController {
         if (user != null) {
             // Successfully logged in
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/DashboardView.fxml"));
+                URL dashboardUrl = getClass().getResource("/views/DashboardView.fxml");
+                if (dashboardUrl == null) {
+                    showAlert("Error: Could not find DashboardView.fxml");
+                    return;
+                }
+                
+                FXMLLoader loader = new FXMLLoader(dashboardUrl);
                 Parent dashboardView = loader.load();
                 
                 DashboardController controller = loader.getController();
@@ -58,7 +65,13 @@ public class LoginController {
     @FXML
     private void handleRegister() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/RegisterView.fxml"));
+            URL registerUrl = getClass().getResource("/views/RegisterView.fxml");
+            if (registerUrl == null) {
+                showAlert("Error: Could not find RegisterView.fxml");
+                return;
+            }
+            
+            FXMLLoader loader = new FXMLLoader(registerUrl);
             Parent registerView = loader.load();
             
             Scene scene = new Scene(registerView);
