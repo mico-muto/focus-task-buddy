@@ -68,9 +68,21 @@ const RegisterPage = () => {
     setIsLoading(true);
     try {
       const { confirmPassword, ...userData } = values;
+      // Ensure all required fields are explicitly passed as non-optional
       const success = await register({
         ...userData,
         profilePic: "",
+        username: values.username,
+        password: values.password,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        age: values.age,
+        gender: values.gender,
+        birthMonth: values.birthMonth,
+        birthDay: values.birthDay,
+        birthYear: values.birthYear,
+        middleName: values.middleName || "",
       });
       
       if (success) {
