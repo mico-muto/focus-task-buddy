@@ -1,0 +1,54 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="TaskForm"
+      prefHeight="500.0" prefWidth="600.0"
+      spacing="10" styleClass="form-container">
+
+    <stylesheets>
+        <URL value="@../styles/application.css"/>
+    </stylesheets>
+    
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    
+    <Label text="Task Details" styleClass="form-header"/>
+    
+    <Label text="Task Name" styleClass="form-label"/>
+    <TextField fx:id="taskNameField" styleClass="form-field"/>
+    
+    <Label text="Task Description" styleClass="form-label"/>
+    <TextArea fx:id="taskDetailsArea" wrapText="true" prefHeight="100" styleClass="form-field"/>
+    
+    <Label text="Due Date" styleClass="form-label"/>
+    <HBox spacing="10">
+        <DatePicker fx:id="dueDatePicker" styleClass="form-field" HBox.hgrow="ALWAYS"/>
+    </HBox>
+    
+    <Label text="Due Time" styleClass="form-label"/>
+    <HBox spacing="10">
+        <ComboBox fx:id="hourComboBox" promptText="Hour" styleClass="form-field"/>
+        <ComboBox fx:id="minuteComboBox" promptText="Minute" styleClass="form-field"/>
+        <ComboBox fx:id="amPmComboBox" promptText="AM/PM" styleClass="form-field"/>
+    </HBox>
+    
+    <Label text="Priority" styleClass="form-label"/>
+    <ComboBox fx:id="priorityComboBox" styleClass="form-field"/>
+    
+    <Label text="Status" styleClass="form-label"/>
+    <ComboBox fx:id="statusComboBox" styleClass="form-field"/>
+    
+    <Region VBox.vgrow="ALWAYS" />
+    
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancel" onAction="#handleCancel" styleClass="secondary-button"/>
+        <Button text="Save" onAction="#handleSave" styleClass="primary-button"/>
+    </HBox>
+</VBox>

@@ -1,0 +1,59 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.DashboardController"
+            prefHeight="600.0" prefWidth="800.0"
+            styleClass="app-background">
+
+    <stylesheets>
+        <URL value="@../styles/application.css"/>
+    </stylesheets>
+    
+    <!-- Left sidebar -->
+    <left>
+        <VBox styleClass="sidebar">
+            <padding>
+                <Insets top="20" right="10" bottom="20" left="10"/>
+            </padding>
+            
+            <Button text="Dashboard" styleClass="nav-button,nav-button-active"/>
+            <Button text="My Tasks" styleClass="nav-button"/>
+            <Button text="Completed" fx:id="viewCompletedButton" onAction="#handleViewCompleted" styleClass="nav-button"/>
+            
+            <Region VBox.vgrow="ALWAYS"/>
+            
+            <Button text="Profile" fx:id="profileButton" onAction="#handleProfile" styleClass="nav-button"/>
+            <Button text="Log Out" fx:id="logoutButton" onAction="#handleLogout" styleClass="nav-button-logout"/>
+        </VBox>
+    </left>
+    
+    <!-- Main content -->
+    <center>
+        <VBox spacing="15">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label fx:id="welcomeLabel" text="Welcome!" styleClass="welcome-text">
+                    <font>
+                        <Font name="System Bold" size="24"/>
+                    </font>
+                </Label>
+            </HBox>
+            
+            <HBox alignment="CENTER_RIGHT" spacing="10">
+                <Button fx:id="addTaskButton" text="Add New Task" onAction="#handleAddTask" styleClass="primary-button"/>
+            </HBox>
+            
+            <ListView fx:id="taskListView" VBox.vgrow="ALWAYS" styleClass="task-list"/>
+        </VBox>
+    </center>
+</BorderPane>

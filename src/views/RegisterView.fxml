@@ -1,0 +1,79 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.RegisterController"
+            fitToWidth="true"
+            styleClass="app-background">
+
+    <stylesheets>
+        <URL value="@../styles/application.css"/>
+    </stylesheets>
+    
+    <VBox spacing="15" styleClass="register-form">
+        <padding>
+            <Insets top="20" right="40" bottom="40" left="40"/>
+        </padding>
+        
+        <Label text="REGISTER" styleClass="header-text"/>
+        
+        <Label text="Full Name" styleClass="form-label"/>
+        <HBox spacing="10">
+            <TextField fx:id="firstNameField" promptText="First name" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField fx:id="middleNameField" promptText="Middle name (optional)" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField fx:id="lastNameField" promptText="Last name" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+        </HBox>
+        
+        <Label text="Username" styleClass="form-label"/>
+        <TextField fx:id="usernameField" promptText="Enter username" styleClass="form-field"/>
+        
+        <Label text="Email" styleClass="form-label"/>
+        <TextField fx:id="emailField" promptText="Enter email" styleClass="form-field"/>
+        
+        <HBox spacing="10">
+            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label text="Password" styleClass="form-label"/>
+                <PasswordField fx:id="passwordField" promptText="Enter password" styleClass="form-field"/>
+            </VBox>
+            
+            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label text="Confirm Password" styleClass="form-label"/>
+                <PasswordField fx:id="confirmPasswordField" promptText="Confirm password" styleClass="form-field"/>
+            </VBox>
+        </HBox>
+        
+        <HBox spacing="10">
+            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label text="Age" styleClass="form-label"/>
+                <TextField fx:id="ageField" promptText="Age" styleClass="form-field"/>
+            </VBox>
+            
+            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label text="Gender" styleClass="form-label"/>
+                <ComboBox fx:id="genderComboBox" promptText="Select gender" maxWidth="Infinity" styleClass="form-field"/>
+            </VBox>
+        </HBox>
+        
+        <Label text="Birth Date" styleClass="form-label"/>
+        <HBox spacing="10">
+            <ComboBox fx:id="birthMonthComboBox" promptText="Month" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <ComboBox fx:id="birthDayComboBox" promptText="Day" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <ComboBox fx:id="birthYearComboBox" promptText="Year" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+        </HBox>
+        
+        <HBox spacing="10" alignment="CENTER" padding="20">
+            <Button fx:id="registerButton" text="Register" onAction="#handleRegister" styleClass="primary-button"/>
+            <Button fx:id="cancelButton" text="Cancel" onAction="#handleCancel" styleClass="secondary-button"/>
+        </HBox>
+        
+        <HBox alignment="CENTER" spacing="5">
+            <Label text="Already have an account?" styleClass="text-small"/>
+            <Button fx:id="loginButton" text="Log in" onAction="#handleBackToLogin" styleClass="link-button"/>
+        </HBox>
+    </VBox>
+</ScrollPane>
