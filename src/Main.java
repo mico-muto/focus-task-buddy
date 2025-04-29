@@ -1,4 +1,6 @@
 
+package ToDo;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,7 +13,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Get the correct URL for the resource
-        URL loginViewUrl = getClass().getResource("/views/LoginView.fxml");
+        URL loginViewUrl = getClass().getResource("/ToDo/views/LoginView.fxml");
         if (loginViewUrl == null) {
             System.err.println("Error: Could not find LoginView.fxml");
             System.err.println("Working directory: " + System.getProperty("user.dir"));
@@ -29,10 +31,10 @@ public class Main extends Application {
     
     public static void main(String[] args) {
         // Initialize the data storage with demo data
-        DataStorage.getInstance().initializeDemoData();
+        ToDo.DataStorage.getInstance().initializeDemoData();
         
         // Add admin user explicitly for testing
-        DataStorage.getInstance().addAdminUser("admin", "admin");
+        ToDo.DataStorage.getInstance().addAdminUser("admin", "admin");
         
         launch(args);
     }

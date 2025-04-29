@@ -1,0 +1,71 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="ToDo.controllers.ProfileController"
+            prefHeight="600.0" prefWidth="800.0"
+            styleClass="app-background">
+
+    <stylesheets>
+        <URL value="@../styles/application.css"/>
+    </stylesheets>
+    
+    <!-- Left sidebar -->
+    <left>
+        <VBox styleClass="sidebar">
+            <padding>
+                <Insets top="20" right="10" bottom="20" left="10"/>
+            </padding>
+            
+            <Button text="Dashboard" fx:id="backButton" onAction="#handleBack" styleClass="nav-button"/>
+            <Button text="My Tasks" styleClass="nav-button"/>
+            <Button text="Completed" styleClass="nav-button"/>
+            
+            <Region VBox.vgrow="ALWAYS"/>
+            
+            <Button text="Profile" styleClass="nav-button,nav-button-active"/>
+            <Button text="Log Out" styleClass="nav-button-logout"/>
+        </VBox>
+    </left>
+    
+    <!-- Main content -->
+    <center>
+        <VBox spacing="15" styleClass="content-area">
+            <padding>
+                <Insets top="30" right="40" bottom="30" left="40"/>
+            </padding>
+            
+            <Label text="User Profile" styleClass="section-header"/>
+            
+            <GridPane vgap="15" hgap="20">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="NEVER" minWidth="100" prefWidth="150" />
+                    <ColumnConstraints hgrow="ALWAYS" />
+                </columnConstraints>
+                
+                <Label text="Full Name:" styleClass="profile-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                <Label fx:id="fullNameLabel" styleClass="profile-value" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                
+                <Label text="Username:" styleClass="profile-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                <Label fx:id="usernameLabel" styleClass="profile-value" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                
+                <Label text="Email:" styleClass="profile-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                <Label fx:id="emailLabel" styleClass="profile-value" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                
+                <Label text="Age:" styleClass="profile-label" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                <Label fx:id="ageLabel" styleClass="profile-value" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                
+                <Label text="Gender:" styleClass="profile-label" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                <Label fx:id="genderLabel" styleClass="profile-value" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+                
+                <Label text="Birth Date:" styleClass="profile-label" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                <Label fx:id="birthDateLabel" styleClass="profile-value" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+            </GridPane>
+        </VBox>
+    </center>
+</BorderPane>
